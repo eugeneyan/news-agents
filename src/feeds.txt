@@ -1,0 +1,4 @@
+hn: https://news.ycombinator.com/rss
+wsj: https://feeds.content.dowjones.io/public/rss/RSSWSJD
+wsj: https://feeds.content.dowjones.io/public/rss/RSSMarketsMain
+wsj: https://feeds.content.dowjones.io/public/rss/socialhealth
