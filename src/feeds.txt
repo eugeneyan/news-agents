@@ -1,4 +1,6 @@
-hn: https://news.ycombinator.com/rss
-wsj: https://feeds.content.dowjones.io/public/rss/RSSWSJD
-wsj: https://feeds.content.dowjones.io/public/rss/RSSMarketsMain
-wsj: https://feeds.content.dowjones.io/public/rss/socialhealth
+hackernews: https://news.ycombinator.com/rss
+wallstreetjournal: https://feeds.content.dowjones.io/public/rss/RSSWSJD
+wallstreetjournal: https://feeds.content.dowjones.io/public/rss/RSSMarketsMain
+wallstreetjournal: https://feeds.content.dowjones.io/public/rss/socialhealth
+techcrunch: https://techcrunch.com/feed/
+ainews: https://news.smol.ai/rss.xml

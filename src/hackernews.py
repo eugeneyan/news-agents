@@ -8,7 +8,7 @@ DEFAULT_HN_RSS_URL = "https://news.ycombinator.com/rss"
 USER_AGENT = "hackernews-reader/1.0"
 
 
-async def fetch_hn_rss(feed_url: str = DEFAULT_HN_RSS_URL) -> str:
+async def fetch_hn_rss(feed_url: str) -> str:
     """
     Fetch Hacker News RSS feed.
 
