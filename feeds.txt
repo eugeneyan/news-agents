@@ -1,0 +1,6 @@
+hackernews: https://news.ycombinator.com/rss
+wsj-tech: https://feeds.content.dowjones.io/public/rss/RSSWSJD
+wsj-markets: https://feeds.content.dowjones.io/public/rss/RSSMarketsMain
+techcrunch: https://techcrunch.com/feed/
+ainews: https://news.smol.ai/rss.xml
+wired: https://www.wired.com/feed/tag/ai/latest/rss
