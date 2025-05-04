@@ -1,6 +1,6 @@
 # News Agents
 
-A little experiment with Amazon Q, Model Context Protocol (MCP), and tmux to create a news aggregation system that runs entirely in your terminal. It fetches and summarizes articles from various news sources using multiple agents working in parallel.
+A little experiment with Amazon Q, Model Context Protocol (MCP), and tmux to create a news aggregation system that runs entirely in your terminal. It fetches and summarizes articles from various news sources using multiple agents working in parallel. Also read the write-up and watch the video demo [here](https://eugeneyan.com/writing/news-agents/).
 
 ## What's This All About?
 
