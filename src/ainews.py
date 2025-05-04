@@ -37,7 +37,7 @@ async def fetch_ainews_rss(feed_url: str = DEFAULT_AINEWS_RSS_URL) -> str:
             return f"Error fetching RSS: {str(e)}"
 
 
-def extract_twitter_recap(content: str) -> List[str]:
+def extract_twitter_recap(content: str) -> List[Dict[str, str]]:
     """
     Extract AI Twitter Recap section from the full content.
 
@@ -45,7 +45,7 @@ def extract_twitter_recap(content: str) -> List[str]:
         content: Full HTML content from the article
 
     Returns:
-        List of Twitter recap items (bullet points)
+        List of dictionaries containing title and first link for each recap item
     """
     # Convert HTML entities
     content = html.unescape(content)
@@ -64,9 +64,17 @@ def extract_twitter_recap(content: str) -> List[str]:
     bullet_pattern = re.findall(r"<li>(.*?)</li>", twitter_recap_section, re.DOTALL)
 
     for bullet in bullet_pattern:
-        # Clean up HTML tags (simple approach - could use a more robust HTML parser if needed)
-        cleaned_bullet = re.sub(r"<.*?>", "", bullet)
-        bullet_points.append(cleaned_bullet.strip())
+        # Use entire bullet content as title (after removing HTML tags)
+        title = re.sub(r"<.*?>", "", bullet).strip()
+
+        # Extract first link
+        link_match = re.search(r'<a href="([^"]+)"', bullet)
+        link = link_match.group(1) if link_match else ""
+
+        bullet_points.append({
+            "title": title,
+            "link": link
+        })
 
     return bullet_points
 
@@ -164,7 +172,7 @@ Published: {pub_date}
     if twitter_recap:
         formatted += "\n\nAI Twitter Recap:\n"
         for i, item in enumerate(twitter_recap, 1):
-            formatted += f"{i}. {item}\n"
+            formatted += f"Title: {item['title']}\nLink: {item['link']}\n\n"
 
     # Add categories if available
     categories = story.get("categories", [])
