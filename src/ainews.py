@@ -45,7 +45,7 @@ def extract_twitter_recap(content: str) -> List[Dict[str, str]]:
         content: Full HTML content from the article
 
     Returns:
-        List of dictionaries containing title and first link for each recap item
+        List of dictionaries containing title, description and link for each recap item
     """
     # Convert HTML entities
     content = html.unescape(content)
@@ -64,17 +64,22 @@ def extract_twitter_recap(content: str) -> List[Dict[str, str]]:
     bullet_pattern = re.findall(r"<li>(.*?)</li>", twitter_recap_section, re.DOTALL)
 
     for bullet in bullet_pattern:
-        # Use entire bullet content as title (after removing HTML tags)
-        title = re.sub(r"<.*?>", "", bullet).strip()
+        clean_bullet = re.sub(r"<.*?>", "", bullet).strip()
+
+        # Extract title (part before the colon)
+        title_match = re.match(r"^(.*?):", clean_bullet)
+        if title_match:
+            title = title_match.group(1).strip()
+            description = clean_bullet[len(title_match.group(0)) :].strip()
+        else:
+            title = clean_bullet
+            description = ""
 
         # Extract first link
         link_match = re.search(r'<a href="([^"]+)"', bullet)
         link = link_match.group(1) if link_match else ""
 
-        bullet_points.append({
-            "title": title,
-            "link": link
-        })
+        bullet_points.append({"title": title, "description": description, "link": link})
 
     return bullet_points
 
@@ -158,21 +163,20 @@ def format_ainews_story(story: Dict[str, Any]) -> str:
     pub_date = story.get("pubDate", "Unknown publication date")
     description = story.get("description", "No description available")
 
-    # Build the formatted string
+    # Build the formatted string with the new order
     formatted = f"""
 Title: {title}
 Link: {link}
+Description: {description}
 Published: {pub_date}
-
-{description}
 """
 
-    # Add Twitter recap if available
+    # Add Twitter recap if available, but without the header
     twitter_recap = story.get("twitter_recap", [])
     if twitter_recap:
-        formatted += "\n\nAI Twitter Recap:\n"
-        for i, item in enumerate(twitter_recap, 1):
-            formatted += f"Title: {item['title']}\nLink: {item['link']}\n\n"
+        formatted += "\n\n"  # Add space but no header
+        for item in twitter_recap:
+            formatted += f"Title: {item['title']}\nLink: {item['link']}\nDescription: {item['description']}\n\n"
 
     # Add categories if available
     categories = story.get("categories", [])
