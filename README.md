@@ -9,25 +9,13 @@ Also read the write-up [here](https://eugeneyan.com/writing/news-agents/), and c
 ## What's This All About?
 
 This project is me playing around with:
-- Amazon Q agent capabilities 
-- MCP for extending functionality
-- tmux for splitting the terminal and monitoring multiple agents at once
+- Amazon Q CLI as agent harness
+- MCP to parse RSS feeds as tools
+- tmux for terminal splitting and monitoring
 
 The system grabs news from several sources like Hacker News, TechCrunch, and WSJ, then summarizes everything into nice readable digests, all in your terminal window.
 
 ## Getting Started
-
-### Stuff You'll Need
-
-1. Python 3.8 or newer - you probably have this already
-2. uv - a super fast Python package installer:
-```bash
-pip install uv
-```
-3. Project dependencies:
-```bash
-uv sync
-```
 
 ### Setting Up Amazon Q
 
@@ -38,32 +26,34 @@ uv sync
 q --version
 ```
 
-## Running It
-
-Just fire up Q with:
+### Clone repo and run it
 
 ```bash
-q chat --trust-all-tools  # Should be safe for this demo
+git clone https://github.com/eugeneyan/news-agents.git
 
-> Q, read context/main-agent.md and spin up sub agents to execute it.
+cd news-agents
+uv sync  # Sync dependencies
+uv tree  # Check httpx and mcp[cli] are installed
+
+q chat --trust-all-tools  # Start Q
+
+/context add --global context/agents.md  # Add system context for multi-agents
+
+Q, read context/main-agent.md and spin up sub agents to execute it.  # Start main agent
 ```
 
 The system will start doing its thing: Splitting into multiple agents and processing news feeds in parallel using tmux panes to keep everything visible.
 
 ## How It Works
 
-### The Main Agent
-
-Think of it as the boss:
+### Main Agent
 - Grabs feed URLs from `feeds.txt`
 - Splits them into 3 equal chunks
-- Spawns 3 worker agents in separate tmux panes
+- Spawns 3 sub agents in separate tmux panes
 - Keeps an eye on everyone's progress
 - Collects all the summaries at the end
 
-### The Worker Agents
-
-These are the employees doing the actual work:
+### Sub Agents
 - Each gets assigned several feeds
 - For each feed they:
   - Pull down the content
@@ -79,13 +69,13 @@ Main Agent (in the main tmux pane)
 ├── Read feeds.txt
 ├── Split feeds into 3 chunks
 ├── Create 3 Sub-Agents (in separate tmux panes)
-│   ├── Worker #1
+│   ├── Sub-Agent #1
 │   │   ├── Process feeds in chunk 1
 │   │   └── Report back when done
-│   ├── Worker #2
+│   ├── Sub-Agent #2
 │   │   ├── Process feeds in chunk 2
 │   │   └── Report back when done
-│   └── Worker #3
+│   └── Sub-Agent #3
 │       ├── Process feeds in chunk 3
 │       └── Report back when done
 └── Combine everything into overall.md
@@ -107,7 +97,7 @@ uv run mcp dev src/main.p
 
 ```
 .
-├── context/            # Instructions for the agents
+├── context/           # Instructions for the agents
 ├── src/               # Code for processing each feed type
 │   ├── ainews.py      # AI News stuff
 │   ├── hackernews.py  # Hacker News stuff
@@ -116,5 +106,3 @@ uv run mcp dev src/main.p
 │   └── wsj.py         # Wall Street Journal stuff
 └── summaries/         # Where all the summaries end up
 ```
-
-Enjoy playing with this terminal-based news aggregation experiment!
