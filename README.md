@@ -78,7 +78,7 @@ Main Agent (in the main tmux pane)
 │   └── Sub-Agent #3
 │       ├── Process feeds in chunk 3
 │       └── Report back when done
-└── Combine everything into overall.md
+└── Combine everything into main-summary.md
 ```
 
 ## What You Get
