@@ -1,3 +1,5 @@
+[![MseeP.ai Security Assessment Badge](https://mseep.net/pr/eugeneyan-news-agents-badge.png)](https://mseep.ai/app/eugeneyan-news-agents)
+
 # News Agents
 
 A little experiment with Amazon Q, Model Context Protocol (MCP), and tmux to create a news aggregation system that runs entirely in your terminal. It fetches and summarizes articles from various news sources using multiple agents working in parallel. 
